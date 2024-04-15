@@ -25,10 +25,8 @@ yarn install
 
 Start the development server by running;
 
-#### Starting the app
-
 ```js
-yarn dev`
+yarn dev
 ```
 
 The application runs on `http://localhost:8080`
