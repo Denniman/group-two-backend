@@ -29,12 +29,16 @@ export default class AuthController extends AuthControllerInterface {
    * @returns {ExpressResponseInterface} {ExpressResponseInterface}
    * @memberof AuthController
    */
-  static async signup(req: Request, res: Response, next: NextFunction): ExpressResponseInterface {
+  static async signup(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): ExpressResponseInterface {
     try {
       const { email } = req.body;
       //   this unfinished work is just a template
 
-      const userExits = await prisma.user.findUnique({
+      const userExits = await prisma.client.findUnique({
         where: {
           email,
         },
@@ -50,7 +54,7 @@ export default class AuthController extends AuthControllerInterface {
         sendResponse({
           message: "success",
           status: httpStatus.CREATED,
-        })
+        }),
       );
     } catch (error) {
       return next(error);
@@ -69,7 +73,11 @@ export default class AuthController extends AuthControllerInterface {
    * @memberof AuthController
    */
 
-  static async signin(_req: Request, _res: Response, next: NextFunction): ExpressResponseInterface {
+  static async signin(
+    _req: Request,
+    _res: Response,
+    next: NextFunction,
+  ): ExpressResponseInterface {
     try {
     } catch (error) {
       // console.log(error);
@@ -92,7 +100,7 @@ export default class AuthController extends AuthControllerInterface {
   static async signout(
     _req: Request,
     _res: Response,
-    next: NextFunction
+    next: NextFunction,
   ): ExpressResponseInterface {
     try {
     } catch (error) {
@@ -115,7 +123,7 @@ export default class AuthController extends AuthControllerInterface {
   static async forgotPassword(
     _req: Request,
     _res: Response,
-    next: NextFunction
+    next: NextFunction,
   ): ExpressResponseInterface {
     try {
     } catch (error) {
