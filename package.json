@@ -1,0 +1,46 @@
+{
+  "name": "group-two-backend",
+  "version": "1.0.0",
+  "description": "e-commerce application",
+  "main": "build/src/index",
+  "scripts": {
+    "migrate": "npx prisma migrate dev",
+    "seed": "npx prisma db seed",
+    "studio": "npx prisma studio",
+    "start": "tsc && NODE_ENV=production && node build/src/index",
+    "prisma:format": "npx prisma format",
+    "format": "prettier --write \"**/*.{js,ts,tsx,json}\"",
+    "dev": "NODE_ENV=development nodemon",
+    "prepare": "husky"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "5.12.1",
+    "bcrypt": "^5.1.1",
+    "celebrate": "^15.0.3",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "http-status": "^1.7.4",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/compression": "^1.7.5",
+    "@types/cookie-parser": "^1.4.7",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/node": "^20.12.7",
+    "eslint": "^9.0.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "husky": "^9.0.11",
+    "nodemon": "^3.1.0",
+    "prettier": "^3.2.5",
+    "prisma": "^5.12.1",
+    "typescript": "^5.4.5"
+  }
+}
