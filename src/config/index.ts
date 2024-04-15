@@ -17,17 +17,11 @@ const envVarsSchema = Joi.object({
 
   REFRESH_TOKEN_EXPIRY: Joi.string().default("1yr").required(),
 
-  IMAGEKIT_PUBLIC_KEY: Joi.string().default(
-    "public_3YeVHec1oUGs0hvfrwLnekiP/lE=",
-  ),
+  IMAGEKIT_PUBLIC_KEY: Joi.string().default("public_3YeVHec1oUGs0hvfrwLnekiP/lE="),
 
-  IMAGEKIT_PRIVATE_KEY: Joi.string().default(
-    "private_v/bV5Ej/VtP68qYaymL4o9l2mm4=",
-  ),
+  IMAGEKIT_PRIVATE_KEY: Joi.string().default("private_v/bV5Ej/VtP68qYaymL4o9l2mm4="),
 
-  IMAGEKIT_URL_ENDPOINT: Joi.string().default(
-    "https://ik.imagekit.io/vxzwvhywo/",
-  ),
+  IMAGEKIT_URL_ENDPOINT: Joi.string().default("https://ik.imagekit.io/vxzwvhywo/"),
 })
   .unknown()
   .required();

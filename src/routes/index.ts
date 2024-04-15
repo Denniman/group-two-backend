@@ -10,7 +10,7 @@ const router = Router();
 
 /** GET /health-check - Check service health */
 router.get("/health-check", (_req: Request, res: Response) =>
-  res.send({ check: "switchstore server started ok*-*" }),
+  res.send({ check: "switchstore server started ok*-*" })
 );
 
 // mount auth routes
