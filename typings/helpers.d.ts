@@ -14,7 +14,4 @@ export interface ResponseInterface {
   payload?: object | null;
 }
 
-export type ExpressResponseInterface = Promise<void | Response<
-  any,
-  Record<string, any>
->>;
+export type ExpressResponseInterface = Promise<void | Response<any, Record<string, any>>>;

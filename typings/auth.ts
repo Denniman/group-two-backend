@@ -13,7 +13,7 @@ export abstract class AuthControllerInterface {
   public static signup: (
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ) => ExpressResponseInterface;
 
   /**
@@ -27,7 +27,7 @@ export abstract class AuthControllerInterface {
   public static signin: (
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ) => ExpressResponseInterface;
 
   /**
@@ -41,12 +41,12 @@ export abstract class AuthControllerInterface {
   public static forgotPassword: (
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ) => ExpressResponseInterface;
 
   public static signout: (
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ) => ExpressResponseInterface;
 }
