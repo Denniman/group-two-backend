@@ -13,7 +13,7 @@ export abstract class ErrorServiceInterface {
     error: ExpressErrorInterface,
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ) => void;
 
   /**
@@ -28,7 +28,7 @@ export abstract class ErrorServiceInterface {
     error: ExpressErrorInterface,
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ) => void;
 
   /**
@@ -44,7 +44,5 @@ export abstract class ErrorServiceInterface {
    * @param {ErrorResponseInterface} error
    * @returns {ErrorResponseInterface}
    */
-  public static reportError: (
-    error: ErrorResponseInterface,
-  ) => ErrorResponseInterface;
+  public static reportError: (error: ErrorResponseInterface) => ErrorResponseInterface;
 }

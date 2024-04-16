@@ -11,7 +11,7 @@ const router = Router();
 
 /** GET /health-check - Check service health */
 router.get("/health-check", (_req: Request, res: Response) =>
-  res.send({ check: "switchCommerce server started ok*-*" }),
+  res.send({ check: "switchCommerce server started ok*-*" })
 );
 
 // mount auth routes

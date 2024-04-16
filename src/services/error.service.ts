@@ -35,7 +35,7 @@ export default class ErrorService extends ErrorServiceInterface {
     error: ExpressErrorInterface,
     _req: Request,
     res: Response,
-    _next?: NextFunction,
+    _next?: NextFunction
   ): void => {
     const response: ErrorResponseInterface = {
       payload: null,
@@ -69,7 +69,7 @@ export default class ErrorService extends ErrorServiceInterface {
     error: ExpressErrorInterface,
     req: Request,
     res: Response,
-    _next: NextFunction,
+    _next: NextFunction
   ): void => {
     let convertedError: Error = error;
 
@@ -77,9 +77,7 @@ export default class ErrorService extends ErrorServiceInterface {
       convertedError = new APIError({
         status: httpStatus.BAD_REQUEST,
         message: JSON.stringify(
-          joiErrorFormatter(
-            error.details as unknown as Map<string, JoiValidationError>,
-          ),
+          joiErrorFormatter(error.details as unknown as Map<string, JoiValidationError>)
         ),
       });
     }
@@ -115,11 +113,7 @@ export default class ErrorService extends ErrorServiceInterface {
       });
     }
 
-    return ErrorService.handler(
-      convertedError as unknown as ExpressErrorInterface,
-      req,
-      res,
-    );
+    return ErrorService.handler(convertedError as unknown as ExpressErrorInterface, req, res);
   };
 
   /**
@@ -138,11 +132,7 @@ export default class ErrorService extends ErrorServiceInterface {
       stack: undefined,
     });
 
-    return ErrorService.handler(
-      error as unknown as ExpressErrorInterface,
-      req,
-      res,
-    );
+    return ErrorService.handler(error as unknown as ExpressErrorInterface, req, res);
   };
 
   /**
@@ -153,9 +143,7 @@ export default class ErrorService extends ErrorServiceInterface {
    * @memberof ErrorService
    */
 
-  public static reportError = (
-    error: ErrorResponseInterface,
-  ): ErrorResponseInterface => {
+  public static reportError = (error: ErrorResponseInterface): ErrorResponseInterface => {
     // report to sentry or google crashlytics
     // report to app communication centers example -> slack etc
     return error;

@@ -31,11 +31,7 @@ export default class AuthController extends AuthControllerInterface {
    * @returns {ExpressResponseInterface} {ExpressResponseInterface}
    * @memberof AuthController
    */
-  static async signup(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ): ExpressResponseInterface {
+  static async signup(req: Request, res: Response, next: NextFunction): ExpressResponseInterface {
     try {
       const { email, password } = req.body;
 
@@ -63,7 +59,7 @@ export default class AuthController extends AuthControllerInterface {
           payload: user,
           message: "success",
           status: httpStatus.CREATED,
-        }),
+        })
       );
     } catch (error) {
       return next(error);
@@ -82,11 +78,7 @@ export default class AuthController extends AuthControllerInterface {
    * @memberof AuthController
    */
 
-  static async signin(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ): ExpressResponseInterface {
+  static async signin(req: Request, res: Response, next: NextFunction): ExpressResponseInterface {
     try {
       const { email, password } = req.body;
 
@@ -103,10 +95,7 @@ export default class AuthController extends AuthControllerInterface {
         });
       }
 
-      const userPassword = BcryptService.comparePassword(
-        password,
-        user.password,
-      );
+      const userPassword = BcryptService.comparePassword(password, user.password);
 
       if (!userPassword) {
         throw new APIError({
@@ -122,7 +111,7 @@ export default class AuthController extends AuthControllerInterface {
           payload: session,
           message: "success",
           status: httpStatus.OK,
-        }),
+        })
       );
     } catch (error) {
       return next(error);
@@ -144,7 +133,7 @@ export default class AuthController extends AuthControllerInterface {
   static async signout(
     _req: Request,
     _res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): ExpressResponseInterface {
     try {
     } catch (error) {
@@ -167,7 +156,7 @@ export default class AuthController extends AuthControllerInterface {
   static async forgotPassword(
     _req: Request,
     _res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): ExpressResponseInterface {
     try {
     } catch (error) {
