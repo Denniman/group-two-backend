@@ -59,6 +59,7 @@ model Session {
   id         String    @id @unique @default(cuid())
   token      String    @unique
   userId     String
+  refreshToken     String
   userType   UserType
   createdAt  DateTime  @default(now())
   Customer   Customer? @relation(fields: [customerId], references: [id])

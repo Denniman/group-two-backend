@@ -1,3 +1,5 @@
+import { JwtPayload } from "jsonwebtoken";
+
 export interface MerchantInterface {
   id: string;
   email: string;
@@ -27,4 +29,9 @@ export interface SessionInterface {
   expiresAt: Date;
   refreshToken: string;
   user: Partial<MerchantInterface>;
+}
+
+export interface MerchantTokenType extends Omit<JwtPayload, "aud"> {
+  userId: string;
+  email: string;
 }
