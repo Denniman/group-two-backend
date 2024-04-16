@@ -13,7 +13,7 @@ export abstract class AuthPolicyInterface {
   public static authToken: (
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ) => ExpressResponseInterface;
 
   /**
@@ -27,6 +27,6 @@ export abstract class AuthPolicyInterface {
   public static hasRefreshToken: (
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ) => ExpressResponseInterface;
 }

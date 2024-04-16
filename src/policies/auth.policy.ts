@@ -32,7 +32,7 @@ export default class AuthPolicy extends AuthPolicyInterface {
   static async hasAccessToken(
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): ExpressResponseInterface {
     const [bearer, signature] = req?.header("Authorization")?.split(" ") || [];
 
@@ -53,7 +53,7 @@ export default class AuthPolicy extends AuthPolicyInterface {
       sendResponse({
         message: "No Token found",
         status: httpStatus.UNAUTHORIZED,
-      }),
+      })
     );
   }
 
@@ -70,7 +70,7 @@ export default class AuthPolicy extends AuthPolicyInterface {
   static async hasRefreshToken(
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): ExpressResponseInterface {
     const { refreshToken }: Pick<SessionInterface, "refreshToken"> = req.body;
     try {
@@ -86,7 +86,7 @@ export default class AuthPolicy extends AuthPolicyInterface {
           sendResponse({
             message: "Invalid Token",
             status: httpStatus.UNAUTHORIZED,
-          }),
+          })
         );
       }
 

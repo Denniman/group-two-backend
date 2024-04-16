@@ -8,10 +8,7 @@ export interface MerchantInterface {
   isAdmin: boolean;
 }
 
-export type UserSessionInterface = Pick<
-  MerchantInterface,
-  "businessId" | "password" | "id"
-> & {
+export type UserSessionInterface = Pick<MerchantInterface, "businessId" | "password" | "id"> & {
   firstName: string;
   lastName: string;
 };
