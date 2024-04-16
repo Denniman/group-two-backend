@@ -1,5 +1,7 @@
+import { JwtPayload } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 import { ExpressResponseInterface } from "./helpers";
+import { MerchantInterface } from "../typings/merchant";
 
 export abstract class AuthControllerInterface {
   /**
@@ -49,4 +51,38 @@ export abstract class AuthControllerInterface {
     res: Response,
     next: NextFunction
   ) => ExpressResponseInterface;
+}
+
+/**
+ * Auth Service Interface
+ */
+
+export abstract class AuthServiceInterface {
+  /**
+   * @method issueAccessToken
+   * @param { MerchantInterface} payload
+   * @returns {Promise<string>}
+   */
+  public static issueAccessToken: (payload: MerchantInterface) => Promise<string>;
+
+  /**
+   * @method issueRefreshToken
+   * @param { MerchantInterface} payload
+   * @returns {Promise<string>}
+   */
+  public static issueRefreshToken: (payload: MerchantInterface) => Promise<string>;
+
+  /**
+   * @method verifyAccessToken
+   * @param {string} access_token
+   * @returns {Promise<JwtPayload | undefined>}
+   */
+  public static verifyAccessToken: (access_token: string) => Promise<JwtPayload | undefined>;
+
+  /**
+   * @method verifyRefreshToken
+   * @param {string} refresh_token
+   * @returns {Promise<JwtPayload | undefined>}
+   */
+  public static verifyRefreshToken: (refresh_token: string) => Promise<JwtPayload | undefined>;
 }

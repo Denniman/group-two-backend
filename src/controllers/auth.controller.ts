@@ -4,8 +4,10 @@ import { Request, Response, NextFunction } from "express";
 import prisma from "../config/prisma";
 import APIError from "../helpers/api_errors";
 import sendResponse from "../helpers/response";
+import BcryptService from "../services/bcrypt.service";
 import { AuthControllerInterface } from "../../typings/auth";
 import { ExpressResponseInterface } from "../../typings/helpers";
+import { generateSessionToken } from "../services/generateSessionToken.service";
 
 /**
  *
@@ -31,10 +33,9 @@ export default class AuthController extends AuthControllerInterface {
    */
   static async signup(req: Request, res: Response, next: NextFunction): ExpressResponseInterface {
     try {
-      const { email } = req.body;
-      //   this unfinished work is just a template
+      const { email, password } = req.body;
 
-      const userExits = await prisma.client.findUnique({
+      const userExits = await prisma.merchant.findUnique({
         where: {
           email,
         },
@@ -46,8 +47,16 @@ export default class AuthController extends AuthControllerInterface {
           message: "Account already registered with us",
         });
       }
+
+      const hashedPassword = await BcryptService.hashPassword(password);
+
+      const user = await prisma.merchant.create({
+        data: { ...req.body, password: hashedPassword },
+      });
+
       return res.status(httpStatus.CREATED).json(
         sendResponse({
+          payload: user,
           message: "success",
           status: httpStatus.CREATED,
         })
@@ -69,10 +78,42 @@ export default class AuthController extends AuthControllerInterface {
    * @memberof AuthController
    */
 
-  static async signin(_req: Request, _res: Response, next: NextFunction): ExpressResponseInterface {
+  static async signin(req: Request, res: Response, next: NextFunction): ExpressResponseInterface {
     try {
+      const { email, password } = req.body;
+
+      const user = await prisma.merchant.findUnique({
+        where: {
+          email,
+        },
+      });
+
+      if (!user) {
+        throw new APIError({
+          status: httpStatus.BAD_REQUEST,
+          message: "User does not exist",
+        });
+      }
+
+      const userPassword = BcryptService.comparePassword(password, user.password);
+
+      if (!userPassword) {
+        throw new APIError({
+          status: httpStatus.BAD_REQUEST,
+          message: "Invalid email or password",
+        });
+      }
+
+      const session = await generateSessionToken(user);
+
+      return res.status(httpStatus.OK).json(
+        sendResponse({
+          payload: session,
+          message: "success",
+          status: httpStatus.OK,
+        })
+      );
     } catch (error) {
-      // console.log(error);
       return next(error);
     }
   }

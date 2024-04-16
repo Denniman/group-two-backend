@@ -11,13 +11,17 @@ const envVarsSchema = Joi.object({
 
   PORT: Joi.number().default(8080),
 
-  MAGIC_TOKEN_EXPIRY: Joi.string().default("30m"),
-
   BCRYPT_ROUND: Joi.string().default("10").required(),
+
+  ACCESS_TOKEN_EXPIRY: Joi.string().default("1d").required(),
 
   REFRESH_TOKEN_EXPIRY: Joi.string().default("1yr").required(),
 
   IMAGEKIT_PUBLIC_KEY: Joi.string().default("public_3YeVHec1oUGs0hvfrwLnekiP/lE="),
+
+  ACCESS_TOKEN_SECRET: Joi.string().default("67c8d762-ecff-4ff7-00b99c6eae64"),
+
+  REFRESH_TOKEN_SECRET: Joi.string().default("67c1212-ecff-4ff7-00b99c6eae64"),
 
   IMAGEKIT_PRIVATE_KEY: Joi.string().default("private_v/bV5Ej/VtP68qYaymL4o9l2mm4="),
 

@@ -19,6 +19,11 @@ enum TransactionStatus {
   CANCELLED
 }
 
+enum UserType {
+  CUSTOMER
+  MERCHANT
+}
+
 model Customer {
   id         String    @id @unique @default(cuid())
   firstName  String
@@ -29,22 +34,39 @@ model Customer {
   updatedAt  DateTime  @updatedAt
   businessId String?
   belongsTo  Business? @relation(fields: [businessId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  session    Session[]
 
   @@unique([id, businessId])
 }
 
-model Client {
+model Merchant {
   id           String    @id @unique @default(cuid())
   firstName    String
   lastName     String
+  password     String
   email        String    @unique
   avatar       String?
-  ownerId      String?
   isSuperAdmin Boolean   @default(false)
   isAdmin      Boolean   @default(true)
-  owner        Business? @relation(fields: [ownerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  createdAt    DateTime  @default(now())
+  businessId   String?
+  belongsTo    Business? @relation(fields: [businessId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  session      Session[]
   updatedAt    DateTime  @updatedAt
+  createdAt    DateTime  @default(now())
+}
+
+model Session {
+  id         String    @id @unique @default(cuid())
+  token      String    @unique
+  userId     String
+  userType   UserType
+  createdAt  DateTime  @default(now())
+  Customer   Customer? @relation(fields: [customerId], references: [id])
+  customerId String?
+  Merchant   Merchant? @relation(fields: [merchantId], references: [id])
+  merchantId String?
+
+  @@index([userId, userType], name: "UserSessionIndex")
 }
 
 model Product {
@@ -88,7 +110,7 @@ model Transaction {
 
 model Business {
   id                  String     @id @unique @default(cuid())
-  businessName        String?
+  businessName        String     @unique
   businessLogo        String?
   primaryColor        String?
   businessEmail       String?
@@ -97,6 +119,6 @@ model Business {
   businessDescription String?    @db.VarChar(2555)
   createdAt           DateTime   @default(now())
   updatedAt           DateTime   @updatedAt
-  customers           Customer[]
-  client              Client[]
+  customer            Customer[]
+  Merchant            Merchant[]
 }
