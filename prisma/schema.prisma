@@ -19,21 +19,55 @@ enum TransactionStatus {
   CANCELLED
 }
 
-model User {
-  id        String    @id @unique @default(cuid())
-  firstName String
-  lastName  String
-  email     String    @unique
-  password  String
-  avatar    String?
-  isAdmin   Boolean   @default(false)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  products  Product[]
-  brandId   String?
-  belongsTo Brand?    @relation(fields: [brandId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+enum UserType {
+  CUSTOMER
+  MERCHANT
+}
 
-  @@unique([id, brandId])
+model Customer {
+  id         String    @id @unique @default(cuid())
+  firstName  String
+  lastName   String
+  email      String    @unique
+  password   String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  businessId String?
+  belongsTo  Business? @relation(fields: [businessId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  session    Session[]
+
+  @@unique([id, businessId])
+}
+
+model Merchant {
+  id           String    @id @unique @default(cuid())
+  firstName    String
+  lastName     String
+  password     String
+  email        String    @unique
+  avatar       String?
+  isSuperAdmin Boolean   @default(false)
+  isAdmin      Boolean   @default(true)
+  businessId   String?
+  belongsTo    Business? @relation(fields: [businessId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  session      Session[]
+  updatedAt    DateTime  @updatedAt
+  createdAt    DateTime  @default(now())
+}
+
+model Session {
+  id         String    @id @unique @default(cuid())
+  token      String    @unique
+  userId     String
+  refreshToken     String
+  userType   UserType
+  createdAt  DateTime  @default(now())
+  Customer   Customer? @relation(fields: [customerId], references: [id])
+  customerId String?
+  Merchant   Merchant? @relation(fields: [merchantId], references: [id])
+  merchantId String?
+
+  @@index([userId, userType], name: "UserSessionIndex")
 }
 
 model Product {
@@ -47,8 +81,8 @@ model Product {
   description  String?
   category     ProductCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   categoryId   String
-  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId       String
+  business     Business        @relation(fields: [businessId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  businessId   String
   Transaction  Transaction?
   createdAt    DateTime        @default(now())
   updatedAt    DateTime        @updatedAt
@@ -69,21 +103,23 @@ model Transaction {
   txId      String?
   productId String
   status    TransactionStatus?
-  amount    Int
+  amount    Float
   product   Product            @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   createdAt DateTime           @default(now())
   updatedAt DateTime           @updatedAt
 }
 
-model Brand {
-  id                  String   @id @unique @default(cuid())
-  businessName        String?
+model Business {
+  id                  String     @id @unique @default(cuid())
+  businessName        String     @unique
   businessLogo        String?
   primaryColor        String?
   businessEmail       String?
   secondaryColor      String?
-  businessDescription String?  @db.VarChar(2555)
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
-  customers           User[]
+  products            Product[]
+  businessDescription String?    @db.VarChar(2555)
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+  customer            Customer[]
+  Merchant            Merchant[]
 }
