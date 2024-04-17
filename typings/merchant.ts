@@ -3,12 +3,16 @@ import { JwtPayload } from "jsonwebtoken";
 export interface MerchantInterface {
   id: string;
   email: string;
+  role: string;
   businessId: string | null;
   password: string;
   isAdmin: boolean;
 }
 
-export type UserSessionInterface = Pick<MerchantInterface, "businessId" | "password" | "id"> & {
+export type UserSessionInterface = Pick<
+  MerchantInterface,
+  "businessId" | "password" | "id" | "role"
+> & {
   firstName: string;
   lastName: string;
 };
