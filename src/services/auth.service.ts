@@ -23,12 +23,13 @@ export default class AuthService extends AuthServiceInterface {
   public static issueAccessToken = ({
     id,
     email,
+    role,
     businessId,
     isAdmin,
   }: Partial<MerchantInterface>): Promise<string> => {
     return new Promise((resolve, reject) =>
       jwt.sign(
-        { isAdmin, email, businessId },
+        { isAdmin, email, businessId, role },
         config.ACCESS_TOKEN_SECRET,
         { expiresIn: config.ACCESS_TOKEN_EXPIRY, audience: id },
         (error, access_token) => {

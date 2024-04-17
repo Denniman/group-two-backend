@@ -44,6 +44,7 @@ model Merchant {
   firstName    String
   lastName     String
   password     String
+  role         String    @default("Owner")
   email        String    @unique
   avatar       String?
   isSuperAdmin Boolean   @default(false)
@@ -56,16 +57,16 @@ model Merchant {
 }
 
 model Session {
-  id         String    @id @unique @default(cuid())
-  token      String    @unique
-  userId     String
-  refreshToken     String
-  userType   UserType
-  createdAt  DateTime  @default(now())
-  Customer   Customer? @relation(fields: [customerId], references: [id])
-  customerId String?
-  Merchant   Merchant? @relation(fields: [merchantId], references: [id])
-  merchantId String?
+  id           String    @id @unique @default(cuid())
+  token        String    @unique
+  userId       String
+  refreshToken String
+  userType     UserType
+  createdAt    DateTime  @default(now())
+  Customer     Customer? @relation(fields: [customerId], references: [id])
+  customerId   String?
+  Merchant     Merchant? @relation(fields: [merchantId], references: [id])
+  merchantId   String?
 
   @@index([userId, userType], name: "UserSessionIndex")
 }
@@ -113,6 +114,7 @@ model Business {
   id                  String     @id @unique @default(cuid())
   businessName        String     @unique
   businessLogo        String?
+  phoneNumber         String?
   primaryColor        String?
   businessEmail       String?
   secondaryColor      String?
