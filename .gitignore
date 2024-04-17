@@ -135,3 +135,5 @@ github
 
 #migrations
 migrations/
+
+.DS_Store
