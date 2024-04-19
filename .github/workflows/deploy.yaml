@@ -21,5 +21,8 @@ jobs:
         with:
           node-version: "18.x"
 
+      - name: Install Dependencies
+        run: yarn install
+
       - name: Run CI Script
         run: yarn ci
