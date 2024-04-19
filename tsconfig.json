@@ -6,7 +6,7 @@
     "outDir": "build",
     "target": "ESNext",
     "incremental": true,
-    "module": "commonjs",
+    "module": "Commonjs",
     "noUnusedLocals": true,
     "esModuleInterop": true,
     "noImplicitReturns": true,
