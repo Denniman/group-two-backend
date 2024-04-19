@@ -7,11 +7,10 @@
     "migrate": "npx prisma migrate dev",
     "seed": "npx prisma db seed",
     "studio": "npx prisma studio",
-    "start": "tsc && NODE_ENV=production && node build/src/index",
+    "build": "tsc && NODE_ENV=production && node build/src/index",
     "prisma:format": "npx prisma format",
     "format": "prettier --write \"**/*.{js,ts,tsx,json}\"",
     "dev": "NODE_ENV=development nodemon",
-    "ci": "yarn format && yarn start",
     "prepare": "husky"
   },
   "keywords": [],
