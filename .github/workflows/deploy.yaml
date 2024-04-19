@@ -12,18 +12,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "18.x"
-          cache: yarn
-
-      - name: Install Dependencies
-        run: yarn --frozen-lockfile
-
-      - name: Build
-        run: yarn ci
+  steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: "18.19.0"
+        cache: "yarn"
+    - name: Install Dependencies
+      run: yarn --frozen-lockfile
+    - name: Run Build Script
+      run: yarn build
