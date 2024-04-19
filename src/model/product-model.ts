@@ -3,7 +3,7 @@ import { Product, ProductCategory } from "@prisma/client";
 import prisma from "../config/prisma";
 import APIError from "../helpers/api_errors";
 
-export default class ProductRepository {
+export default class ProductModel {
   async createProduct(product: Product): Promise<Product> {
     try {
       const newProduct = await prisma.product.create({

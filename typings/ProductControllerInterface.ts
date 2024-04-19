@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { ExpressResponseInterface } from "./helpers";
 
 export abstract class ProductControllerInterface {
-  
   public static getAll: (
     req: Request,
     res: Response,
@@ -56,6 +55,4 @@ export abstract class ProductControllerInterface {
     res: Response,
     next: NextFunction
   ) => ExpressResponseInterface;
-  
-
 }
