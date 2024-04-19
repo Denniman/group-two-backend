@@ -3,6 +3,7 @@ import compress from "compression";
 import { createServer } from "http";
 import cookieParser from "cookie-parser";
 import methodOverride from "method-override";
+import transactionRoutes from "./routes/transaction.routes";
 
 import config from "./config";
 import routes from "./routes";
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // all API versions are mounted here within the app
 app.use("/api/v1", routes);
+app.use("/api", transactionRoutes);
 
 // if error is not an instanceOf APIError, convert it.
 app.use(ErrorService.converter);
