@@ -1,5 +1,6 @@
 import { JwtPayload } from "jsonwebtoken";
-
+import { Request, Response, NextFunction } from "express";
+import { ExpressResponseInterface } from "./helpers";
 export interface MerchantInterface {
   id: string;
   email: string;
@@ -36,6 +37,64 @@ export interface SessionInterface {
 }
 
 export interface MerchantTokenType extends Omit<JwtPayload, "aud"> {
-  userId: string;
+  id: string;
   email: string;
+}
+
+export abstract class UserControllerInterface {
+  /**
+   * @async
+   * @method createStore
+   * @param {object} req
+   * @param {object} res
+   * @returns {ExpressResponseInterface}
+   * @memberof UserControllerInterface
+   */
+  public static createStore: (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => ExpressResponseInterface;
+
+  /**
+   * @async
+   * @method getCustomers
+   * @param {object} req
+   * @param {object} res
+   * @returns {ExpressResponseInterface}
+   * @memberof UserControllerInterface
+   */
+  public static getCustomers: (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => ExpressResponseInterface;
+
+  /**
+   * @async
+   * @method getAccount
+   * @param {object} req
+   * @param {object} res
+   * @returns {ExpressResponseInterface}
+   * @memberof UserControllerInterface
+   */
+  public static getAccount: (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => ExpressResponseInterface;
+
+  /**
+   * @async
+   * @method getSettings
+   * @param {object} req
+   * @param {object} res
+   * @returns {ExpressResponseInterface}
+   * @memberof UserControllerInterface
+   */
+  public static getSettings: (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => ExpressResponseInterface;
 }
