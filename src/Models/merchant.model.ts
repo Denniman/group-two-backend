@@ -8,6 +8,8 @@ import { StoreInterface, StoreModelInterface } from "typings/storeValidation";
 import { MerchantInterface } from "typings/merchant";
 import { SessionInterface } from "typings/merchant";
 import { generateSessionToken } from "../services/generateSessionToken.service";
+import { BusinessModelInterface, BusinessInterface } from "typings/businessValidation";
+
 
 /**
  * Class representing a Merchant Model for handling authentication and store management.
@@ -130,4 +132,39 @@ export default class MerchantModel {
       throw new APIError(error as HttpExceptionInterface);
     }
   }
+
+  static async createBusiness(request_obj: BusinessModelInterface): Promise<BusinessInterface | null> {
+    try {
+      const { id, businessName } = request_obj;
+
+      const businessNameExits = await prisma.business.findUnique({
+        where: {
+          businessName,
+        },
+      });
+
+      if (businessNameExits) {
+        throw new APIError({
+          status: httpStatus.BAD_REQUEST,
+          message: "Business already registered with us",
+        });
+      }
+
+      const registeredBusiness  = await prisma.business.create({
+        data: { ...request_obj },
+      });
+
+      await prisma.merchant.update({
+        where: { id },
+        data: { businessId: registeredBusiness.id }
+
+      });
+
+      return registeredBusiness
+    
+    } catch (error) {
+      throw new APIError(error as HttpExceptionInterface);
+    }
+  }
+
 }

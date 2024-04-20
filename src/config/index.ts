@@ -9,7 +9,7 @@ const envVarsSchema = Joi.object({
     .valid("development", "staging", "production", "test")
     .default("development"),
 
-  PORT: Joi.number().default(8080),
+  PORT: Joi.number().default(3000),
 
   BCRYPT_ROUND: Joi.string().default("10").required(),
 

@@ -38,4 +38,25 @@ export default class MerchantController extends UserControllerInterface {
       return next(error);
     }
   }
+  static async createBusiness(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): ExpressResponseInterface {
+    try {
+      const { aud: id } = req.token;
+
+      const registeredBusiness = await MerchantModel.createBusiness({ ...req.body, id });
+
+      return res.status(httpStatus.CREATED).json(
+        sendResponse({
+          payload: registeredBusiness,
+          message: "success",
+          status: httpStatus.CREATED,
+        })
+      );
+    } catch (error) {
+      return next(error);
+    }
+  }
 }
