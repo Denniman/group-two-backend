@@ -25,19 +25,16 @@ enum UserType {
 }
 
 model Customer {
-  id         String    @id @unique @default(cuid())
-  firstName  String
-  lastName   String
-  email      String    @unique
-  password   String
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  businessId String?
-  session    Session[]
-  Store      Store     @relation(fields: [storeId], references: [id])
-  storeId    String
-
-  @@unique([id, businessId])
+  id        String    @id @unique @default(cuid())
+  firstName String
+  lastName  String
+  email     String    @unique
+  password  String
+  session   Session[]
+  storeId   String
+  Store     Store     @relation(fields: [storeId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Merchant {
