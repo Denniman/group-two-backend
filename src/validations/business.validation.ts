@@ -28,8 +28,6 @@ export default {
       businessEmail: Joi.string().email().lowercase().required(),
 
       businessDescription: Joi.string().min(11).max(255).required(),
-
     }),
   },
-
 };

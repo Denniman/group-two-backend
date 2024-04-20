@@ -4,9 +4,9 @@ export interface BusinessValidationInterface {
   businessLogo: string;
   phoneNumber: string;
   businessEmail: string;
-  businessDescription: string; 
+  businessDescription: string;
 }
 
 export type BusinessModelInterface = BusinessValidationInterface;
 
-export type BusinessInterface = Pick<BusinessValidationInterface, "id" >;
+export type BusinessInterface = Pick<BusinessValidationInterface, "id">;

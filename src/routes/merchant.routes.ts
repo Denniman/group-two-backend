@@ -19,9 +19,12 @@ router
     MerchantController.createStore
   );
 
-  //mount business routes
+//mount business routes
 router
   .route("/create-business")
-  .post([validate(BusinessValidation.createBusiness, { abortEarly: false })], MerchantController.createBusiness);
-  
+  .post(
+    [validate(BusinessValidation.createBusiness, { abortEarly: false })],
+    MerchantController.createBusiness
+  );
+
 export default router;

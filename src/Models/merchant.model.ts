@@ -10,7 +10,6 @@ import { SessionInterface } from "typings/merchant";
 import { generateSessionToken } from "../services/generateSessionToken.service";
 import { BusinessModelInterface, BusinessInterface } from "typings/businessValidation";
 
-
 /**
  * Class representing a Merchant Model for handling authentication and store management.
  */
@@ -133,7 +132,9 @@ export default class MerchantModel {
     }
   }
 
-  static async createBusiness(request_obj: BusinessModelInterface): Promise<BusinessInterface | null> {
+  static async createBusiness(
+    request_obj: BusinessModelInterface
+  ): Promise<BusinessInterface | null> {
     try {
       const { id, businessName } = request_obj;
 
@@ -150,21 +151,18 @@ export default class MerchantModel {
         });
       }
 
-      const registeredBusiness  = await prisma.business.create({
+      const registeredBusiness = await prisma.business.create({
         data: { ...request_obj },
       });
 
       await prisma.merchant.update({
         where: { id },
-        data: { businessId: registeredBusiness.id }
-
+        data: { businessId: registeredBusiness.id },
       });
 
-      return registeredBusiness
-    
+      return registeredBusiness;
     } catch (error) {
       throw new APIError(error as HttpExceptionInterface);
     }
   }
-
 }
