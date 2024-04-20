@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import compress from "compression";
 import { createServer } from "http";
 import cookieParser from "cookie-parser";
@@ -12,6 +13,9 @@ import ErrorService from "./services/error.service";
 const app = express();
 
 const server = createServer(app);
+
+// allow cross origin requests
+app.use(cors({ credentials: true }));
 
 app.use(cookieParser());
 
