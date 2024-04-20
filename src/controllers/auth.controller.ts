@@ -1,13 +1,11 @@
 import httpStatus from "http-status";
 import { Request, Response, NextFunction } from "express";
 
-import prisma from "../config/prisma";
-import APIError from "../helpers/api_errors";
 import sendResponse from "../helpers/response";
-import BcryptService from "../services/bcrypt.service";
+import MerchantModel from "../Models/merchant.model";
+import CustomerModel from "../Models/customer.model";
 import { AuthControllerInterface } from "../../typings/auth";
 import { ExpressResponseInterface } from "../../typings/helpers";
-import { generateSessionToken } from "../services/generateSessionToken.service";
 
 /**
  *
@@ -33,26 +31,7 @@ export default class AuthController extends AuthControllerInterface {
    */
   static async signup(req: Request, res: Response, next: NextFunction): ExpressResponseInterface {
     try {
-      const { email, password } = req.body;
-
-      const userExits = await prisma.merchant.findUnique({
-        where: {
-          email,
-        },
-      });
-
-      if (userExits) {
-        throw new APIError({
-          status: httpStatus.BAD_REQUEST,
-          message: "Account already registered with us",
-        });
-      }
-
-      const hashedPassword = await BcryptService.hashPassword(password);
-
-      const user = await prisma.merchant.create({
-        data: { ...req.body, password: hashedPassword },
-      });
+      const user = await MerchantModel.signup({ ...req.body });
 
       return res.status(httpStatus.CREATED).json(
         sendResponse({
@@ -80,35 +59,11 @@ export default class AuthController extends AuthControllerInterface {
 
   static async signin(req: Request, res: Response, next: NextFunction): ExpressResponseInterface {
     try {
-      const { email, password } = req.body;
-
-      const user = await prisma.merchant.findUnique({
-        where: {
-          email,
-        },
-      });
-
-      if (!user) {
-        throw new APIError({
-          status: httpStatus.BAD_REQUEST,
-          message: "User does not exist",
-        });
-      }
-
-      const userPassword = BcryptService.comparePassword(password, user.password);
-
-      if (!userPassword) {
-        throw new APIError({
-          status: httpStatus.BAD_REQUEST,
-          message: "Invalid email or password",
-        });
-      }
-
-      const session = await generateSessionToken(user);
+      const loginUser = await MerchantModel.login({ ...req.body });
 
       return res.status(httpStatus.OK).json(
         sendResponse({
-          payload: session,
+          payload: loginUser,
           message: "success",
           status: httpStatus.OK,
         })
@@ -117,48 +72,21 @@ export default class AuthController extends AuthControllerInterface {
       return next(error);
     }
   }
-
-  /**
-   * Route: POST: /auth/signout
-   * @async
-   * @method signout
-   * @description invalidates a user session
-   * @param {Request} req - HTTP Request object
-   * @param {Response} res - HTTP Response object
-   * @param {NextFunction} next - HTTP NextFunction object
-   * @returns {ExpressResponseInterface} {ExpressResponseInterface}
-   * @memberof AuthController
-   */
-
-  static async signout(
-    _req: Request,
-    _res: Response,
+  static async signUpCustomer(
+    req: Request,
+    res: Response,
     next: NextFunction
   ): ExpressResponseInterface {
     try {
-    } catch (error) {
-      next(error);
-    }
-  }
+      const customer = await CustomerModel.create({ ...req.body });
 
-  /**
-   * Route: POST: /auth/forgot-password
-   * @async
-   * @method forgotPassword
-   * @description change merchants password
-   * @param {Request} req - HTTP Request object
-   * @param {Response} res - HTTP Response object
-   * @param {NextFunction} next - HTTP NextFunction object
-   * @returns {ExpressResponseInterface} {ExpressResponseInterface}
-   * @memberof AuthController
-   */
-
-  static async forgotPassword(
-    _req: Request,
-    _res: Response,
-    next: NextFunction
-  ): ExpressResponseInterface {
-    try {
+      return res.status(httpStatus.CREATED).json(
+        sendResponse({
+          payload: customer,
+          message: "success",
+          status: httpStatus.CREATED,
+        })
+      );
     } catch (error) {
       return next(error);
     }

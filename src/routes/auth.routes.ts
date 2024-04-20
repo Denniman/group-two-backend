@@ -20,4 +20,11 @@ router
   .route("/signin")
   .post([validate(AuthValidation.login, { abortEarly: false })], AuthController.signin);
 
+router
+  .route("/customer-signup")
+  .post(
+    [validate(AuthValidation.signUpCustomer, { abortEarly: false })],
+    AuthController.signUpCustomer
+  );
+
 export default router;

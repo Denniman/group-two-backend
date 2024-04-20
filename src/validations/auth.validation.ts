@@ -1,5 +1,6 @@
 import { Joi, Segments } from "celebrate";
 import { AuthValidationInterface } from "typings/authValdiation";
+import { CustomerValidation } from "typings/customerValidation";
 
 /**
  * Object representing the Validation check for app auth HTTP requests
@@ -38,6 +39,22 @@ export default {
   login: {
     [Segments.BODY]: Joi.object<Pick<AuthValidationInterface, "email" | "password">>().keys({
       password: Joi.string().required(),
+      email: Joi.string().email().required(),
+    }),
+  },
+  /**
+   * @description Validate user signin inputs
+   * @param {body} req - Request property object gotten from the request
+   * @property {password} body.password - User password
+   * @property {email} body.email - User email address
+   * @returns {AuthValidationInterface} {AuthValidationInterface} Returns the Request object after validating user inputs from req.body
+   */
+  signUpCustomer: {
+    [Segments.BODY]: Joi.object<CustomerValidation>().keys({
+      password: Joi.string().required(),
+      firstName: Joi.string().required(),
+      lastName: Joi.string().required(),
+      storeName: Joi.string().required(),
       email: Joi.string().email().required(),
     }),
   },
