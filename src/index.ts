@@ -40,5 +40,5 @@ app.use(ErrorService.notFound);
 app.use(ErrorService.handler);
 
 server.listen(config.PORT, () => {
-  console.info(`local server started on port http://localhost:${config.PORT}`);
+  console.info(`Server started on port http://localhost:${config.PORT} (${config.NODE_ENV})`);
 });
