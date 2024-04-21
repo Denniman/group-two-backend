@@ -2,8 +2,8 @@ import httpStatus from "http-status";
 import { Request, Response, NextFunction } from "express";
 
 import sendResponse from "../helpers/response";
-import MerchantModel from "../models/merchant.model";
-import CustomerModel from "../models/customer.model";
+import MerchantModel from "../Models/merchant.model";
+import CustomerModel from "../Models/customer.model";
 import { AuthControllerInterface } from "../../typings/auth";
 import { ExpressResponseInterface } from "../../typings/helpers";
 
