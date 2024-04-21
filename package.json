@@ -10,7 +10,7 @@
     "build": "tsc && cross-env NODE_ENV=production && node build/src/index",
     "prisma:format": "npx prisma format",
     "format": "prettier --write \"**/*.{js,ts,tsx,json}\"",
-    "dev": "cross-env NODE_ENV=development nodemon",
+    "dev": "SET NODE_ENV=development & nodemon",
     "ci": "tsc && yarn format",
     "clean": "rm -rf build",
     "prepare": "husky"

@@ -90,4 +90,30 @@ export default class AuthController extends AuthControllerInterface {
       return next(error);
     }
   }
+
+  /**
+   * Route: POST: /auth/logout
+   * @async
+   * @method logout
+   * @description log out a user
+   * @param {Request} req - HTTP Request object
+   * @param {Response} res - HTTP Response object
+   * @param {NextFunction} next - HTTP NextFunction object
+   * @returns {ExpressResponseInterface} {ExpressResponseInterface}
+   * @memberof AuthController
+   */
+  static async logout(_req: Request, res: Response, next: NextFunction): ExpressResponseInterface {
+    try {
+      
+      return res.status(httpStatus.OK).json(
+        sendResponse({
+          message: "User logged out successfully",
+          status: httpStatus.OK,
+        })
+      );
+    } catch (error) {
+      return next(error);
+    }
+  }
 }
+
