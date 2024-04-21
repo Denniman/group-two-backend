@@ -12,6 +12,7 @@
     "format": "prettier --write \"**/*.{js,ts,tsx,json}\"",
     "dev": "cross-env NODE_ENV=development nodemon",
     "ci": "tsc && yarn format",
+    "clean": "rm -rf build",
     "prepare": "husky"
   },
   "keywords": [],
