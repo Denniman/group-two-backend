@@ -2,8 +2,8 @@ import httpStatus from "http-status";
 import { Request, Response, NextFunction } from "express";
 
 import sendResponse from "../helpers/response";
-import MerchantModel from "../Models/merchant.model";
-import CustomerModel from "../Models/customer.model";
+import MerchantModel from "../models/merchant.model";
+import CustomerModel from "../models/customer.model";
 import { AuthControllerInterface } from "../../typings/auth";
 import { ExpressResponseInterface } from "../../typings/helpers";
 
@@ -31,11 +31,10 @@ export default class AuthController extends AuthControllerInterface {
    */
   static async signup(req: Request, res: Response, next: NextFunction): ExpressResponseInterface {
     try {
-      const user = await MerchantModel.signup({ ...req.body });
+      await MerchantModel.signup({ ...req.body });
 
       return res.status(httpStatus.CREATED).json(
         sendResponse({
-          payload: user,
           message: "success",
           status: httpStatus.CREATED,
         })
