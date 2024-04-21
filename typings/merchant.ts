@@ -44,6 +44,19 @@ export interface MerchantTokenType extends Omit<JwtPayload, "aud"> {
 export abstract class UserControllerInterface {
   /**
    * @async
+   * @method createBusiness
+   * @param {object} req
+   * @param {object} res
+   * @returns {ExpressResponseInterface}
+   * @memberof UserControllerInterface
+   */
+  public static createBusiness: (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => ExpressResponseInterface;
+  /**
+   * @async
    * @method createStore
    * @param {object} req
    * @param {object} res
