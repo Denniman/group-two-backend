@@ -27,4 +27,7 @@ router
     AuthController.signUpCustomer
   );
 
+  router.route("/logout")
+        .post(AuthController.logout);
+
 export default router;
