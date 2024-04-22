@@ -90,4 +90,21 @@ export default class AuthController extends AuthControllerInterface {
       return next(error);
     }
   }
+
+  static async logout(req: Request, res: Response, next: NextFunction): ExpressResponseInterface {
+    try {
+      const { aud: id } = req.token;
+
+      await MerchantModel.logout(id);
+
+      return res.status(httpStatus.OK).json(
+        sendResponse({
+          message: "success",
+          status: httpStatus.OK,
+        })
+      );
+    } catch (error) {
+      return next(error);
+    }
+  }
 }

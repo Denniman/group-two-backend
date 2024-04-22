@@ -1,10 +1,10 @@
 export interface StoreValidation {
   id: string;
   storeName: string;
-  primaryColor: string;
+  backgroundColor: string;
   storeBannerImage: string;
   fontStyle: string;
-  secondaryColor: string;
+  color: string;
   storeDescription: string | null;
 }
 

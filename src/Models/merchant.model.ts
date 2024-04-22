@@ -4,6 +4,7 @@ import APIError from "../helpers/api_errors";
 import BcryptService from "../services/bcrypt.service";
 import { HttpExceptionInterface } from "typings/helpers";
 import { AuthValidationInterface } from "typings/authValdiation";
+import { ProductsRequestInterface } from "../../typings/products";
 import { StoreInterface, StoreModelInterface } from "typings/storeValidation";
 import { MerchantInterface } from "typings/merchant";
 import { SessionInterface } from "typings/merchant";
@@ -96,6 +97,32 @@ export default class MerchantModel {
     }
   }
 
+  static async logout(id: string) {
+    try {
+      await prisma.$transaction(async ($tx) => {
+        const sessionToDelete = await $tx.session.findUnique({
+          where: {
+            userId: id,
+          },
+        });
+        if (!sessionToDelete) {
+          throw new APIError({
+            status: httpStatus.BAD_REQUEST,
+            message: "No user session found",
+          });
+        }
+
+        await $tx.session.delete({
+          where: {
+            id: sessionToDelete?.id,
+          },
+        });
+      });
+    } catch (error) {
+      throw new APIError(error as HttpExceptionInterface);
+    }
+  }
+
   /**
    * Method for creating a new store associated with a merchant.
    * @param {StoreModelInterface} request_obj - The request object containing store details.
@@ -161,6 +188,47 @@ export default class MerchantModel {
       });
 
       return registeredBusiness;
+    } catch (error) {
+      throw new APIError(error as HttpExceptionInterface);
+    }
+  }
+
+  static async createProducts(request_obj: ProductsRequestInterface) {
+    try {
+      const { email, id, categoryName, productName, ...rest } = request_obj;
+      const merchant = await prisma.merchant.findUnique({
+        where: {
+          email,
+        },
+      });
+
+      if (!merchant?.storeId) {
+        throw new APIError({
+          status: httpStatus.BAD_REQUEST,
+          message: "You don't have a store. Please create one to continue",
+        });
+      }
+
+      const store = await prisma.store.findUnique({
+        where: {
+          id: merchant?.storeId,
+        },
+      });
+
+      if (!store) {
+        throw new APIError({
+          status: httpStatus.BAD_REQUEST,
+          message: "You don't have a store. Please create one to continue",
+        });
+      }
+
+      const productsCategory = await prisma.productCategory.create({
+        data: { categoryName },
+      });
+
+      await prisma.product.create({
+        data: { ...rest, productName, storeId: store?.id, categoryId: productsCategory.id },
+      });
     } catch (error) {
       throw new APIError(error as HttpExceptionInterface);
     }
