@@ -1,34 +1,37 @@
 import httpStatus from "http-status";
 import { Request, Response, NextFunction } from "express";
+
 import sendResponse from "../helpers/response";
-import MerchantModel from "../Models/merchant.model";
+import ProductsModel from "../Models/products.model";
 import { UserControllerInterface } from "../../typings/merchant";
 import { ExpressResponseInterface } from "../../typings/helpers";
 
 /**
  *
  * @class
- * @extends MerchantController
+ * @extends ProductsController
  * @classdesc Class representing the authentication controller
  * @description App authentication controller
  * @name AuthController
  *
  */
 
-export default class MerchantController extends UserControllerInterface {
-  static async createStore(
+export default class ProductsController extends UserControllerInterface {
+  static async createProducts(
     req: Request,
     res: Response,
     next: NextFunction
   ): ExpressResponseInterface {
     try {
+      const productImage = req.uploadedImageFile;
+
       const { aud: id } = req.token;
 
-      const merchantStore = await MerchantModel.createStore({ ...req.body, id });
+      const product = await ProductsModel.createProducts({ ...req.body, id, productImage });
 
       return res.status(httpStatus.CREATED).json(
         sendResponse({
-          payload: merchantStore,
+          payload: product,
           message: "success",
           status: httpStatus.CREATED,
         })
@@ -38,38 +41,21 @@ export default class MerchantController extends UserControllerInterface {
     }
   }
 
-  static async getStore(req: Request, res: Response, next: NextFunction): ExpressResponseInterface {
+  static async getAllProducts(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): ExpressResponseInterface {
     try {
       const { aud: id } = req.token;
 
-      const merchantStore = await MerchantModel.getMerchantStore(id);
+      const products = await ProductsModel.getAllProducts(id);
 
       return res.status(httpStatus.OK).json(
         sendResponse({
-          payload: merchantStore,
+          payload: products,
           message: "success",
           status: httpStatus.OK,
-        })
-      );
-    } catch (error) {
-      return next(error);
-    }
-  }
-  static async createBusiness(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): ExpressResponseInterface {
-    try {
-      const { aud: id } = req.token;
-
-      const registeredBusiness = await MerchantModel.createBusiness({ ...req.body, id });
-
-      return res.status(httpStatus.CREATED).json(
-        sendResponse({
-          payload: registeredBusiness,
-          message: "success",
-          status: httpStatus.CREATED,
         })
       );
     } catch (error) {

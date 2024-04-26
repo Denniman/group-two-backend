@@ -17,18 +17,20 @@ const envVarsSchema = Joi.object({
 
   REFRESH_TOKEN_EXPIRY: Joi.string().default("1yr").required(),
 
-  IMAGEKIT_PUBLIC_KEY: Joi.string().default("public_3YeVHec1oUGs0hvfrwLnekiP/lE="),
+  IMAGEKIT_PUBLIC_KEY: Joi.string().default("public_RrLswADV33Vl/Sl07h6LAfzMQUI="),
 
   ACCESS_TOKEN_SECRET: Joi.string().default("67c8d762-ecff-4ff7-00b99c6eae64"),
 
   REFRESH_TOKEN_SECRET: Joi.string().default("67c1212-ecff-4ff7-00b99c6eae64"),
 
-  IMAGEKIT_PRIVATE_KEY: Joi.string().default("private_v/bV5Ej/VtP68qYaymL4o9l2mm4="),
+  IMAGEKIT_PRIVATE_KEY: Joi.string().default("private_HSNO9C7S8kdRdScl0+YwmzBmX6U="),
 
-  IMAGEKIT_URL_ENDPOINT: Joi.string().default("https://ik.imagekit.io/vxzwvhywo/"),
+  IMAGEKIT_URL_ENDPOINT: Joi.string().default("https://ik.imagekit.io/g2d2jnbqu"),
 })
   .unknown()
   .required();
+
+export const MERCHANT_PRODUCTS = "/merchant-products";
 
 const { value: envVariables } = envVarsSchema.validate(process.env, {
   abortEarly: false,
