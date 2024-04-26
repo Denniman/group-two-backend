@@ -19,6 +19,8 @@ router
     MerchantController.createStore
   );
 
+router.route("/get-store").get(MerchantController.getStore);
+
 //mount business routes
 router
   .route("/create-business")

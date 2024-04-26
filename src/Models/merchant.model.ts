@@ -5,9 +5,10 @@ import BcryptService from "../services/bcrypt.service";
 import { HttpExceptionInterface } from "typings/helpers";
 import { AuthValidationInterface } from "typings/authValdiation";
 import { ProductsRequestInterface } from "../../typings/products";
-import { StoreInterface, StoreModelInterface } from "typings/storeValidation";
+import { StoreModelInterface } from "typings/storeValidation";
 import { MerchantInterface } from "typings/merchant";
 import { SessionInterface } from "typings/merchant";
+import { StoreResponseInterface } from "../../typings/storeValidation";
 import { generateSessionToken } from "../services/generateSessionToken.service";
 import { BusinessModelInterface, BusinessInterface } from "typings/businessValidation";
 
@@ -65,12 +66,27 @@ export default class MerchantModel {
         where: {
           email,
         },
+        include: {
+          store: true,
+        },
       });
 
       if (!user) {
         throw new APIError({
           status: httpStatus.BAD_REQUEST,
           message: "User does not exist",
+        });
+      }
+
+      const findUserToken = await prisma.session.findUnique({
+        where: { userId: user.id },
+      });
+
+      if (findUserToken) {
+        await prisma.session.delete({
+          where: {
+            id: findUserToken.id,
+          },
         });
       }
 
@@ -130,7 +146,7 @@ export default class MerchantModel {
    * @throws {APIError} - Throws an error on any API-related errors.
    */
 
-  static async createStore(request_obj: StoreModelInterface): Promise<StoreInterface | null> {
+  static async createStore(request_obj: StoreModelInterface): Promise<any> {
     try {
       const { id, storeName, storeDescription, ...rest } = request_obj;
 
@@ -138,22 +154,49 @@ export default class MerchantModel {
         const storeSettings = await prisma.storeSetting.create({
           data: { ...rest },
         });
-        const createMerchantStore = await prisma.store.create({
+        const store = await prisma.store.create({
           data: { storeName, storeDescription, storeSettingsId: storeSettings.id },
         });
 
-        await prisma.merchant.update({
+        const merchant = await prisma.merchant.update({
           where: { id },
           data: {
             isSuperAdmin: true,
-            storeId: createMerchantStore.id,
+            storeId: store.id,
           },
         });
 
-        return createMerchantStore;
+        return { store, ...merchant };
       });
 
       return createStore;
+    } catch (error) {
+      throw new APIError(error as HttpExceptionInterface);
+    }
+  }
+
+  static async getMerchantStore(id: string): Promise<StoreResponseInterface | null> {
+    try {
+      const merchant = await prisma.merchant.findUnique({
+        where: {
+          id,
+        },
+      });
+
+      if (!merchant?.storeId) {
+        throw new APIError({
+          status: httpStatus.BAD_REQUEST,
+          message: "You don't have a store",
+        });
+      }
+
+      const store = await prisma.store.findUnique({
+        where: {
+          id: merchant?.storeId,
+        },
+      });
+
+      return store;
     } catch (error) {
       throw new APIError(error as HttpExceptionInterface);
     }

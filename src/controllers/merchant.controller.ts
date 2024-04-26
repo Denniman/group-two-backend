@@ -1,6 +1,5 @@
 import httpStatus from "http-status";
 import { Request, Response, NextFunction } from "express";
-
 import sendResponse from "../helpers/response";
 import MerchantModel from "../Models/merchant.model";
 import { UserControllerInterface } from "../../typings/merchant";
@@ -32,6 +31,24 @@ export default class MerchantController extends UserControllerInterface {
           payload: merchantStore,
           message: "success",
           status: httpStatus.CREATED,
+        })
+      );
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  static async getStore(req: Request, res: Response, next: NextFunction): ExpressResponseInterface {
+    try {
+      const { aud: id } = req.token;
+
+      const merchantStore = await MerchantModel.getMerchantStore(id);
+
+      return res.status(httpStatus.OK).json(
+        sendResponse({
+          payload: merchantStore,
+          message: "success",
+          status: httpStatus.OK,
         })
       );
     } catch (error) {
