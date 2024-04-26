@@ -10,4 +10,6 @@ export interface StoreValidation {
 
 export type StoreModelInterface = StoreValidation;
 
+export type StoreResponseInterface = Partial<StoreValidation>;
+
 export type StoreInterface = Pick<StoreValidation, "id" | "storeName" | "storeDescription">;

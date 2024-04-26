@@ -7,7 +7,7 @@ declare global {
   export namespace Express {
     interface Request {
       token: MerchantTokenType;
-      uploadedImageFile?: string;
+      uploadedImageFile: string;
       file?: { [key: string]: FormImageType };
       paginate: PaginateFunction;
     }
