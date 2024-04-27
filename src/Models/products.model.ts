@@ -1,11 +1,14 @@
 import prisma from "../config/prisma";
 import httpStatus from "http-status";
-import { ProductsInterface } from "../../typings/products";
+import { Product } from "@prisma/client";
 import APIError from "../helpers/api_errors";
 import { HttpExceptionInterface } from "typings/helpers";
+import { ProductsInterface } from "../../typings/products";
 
 export default class ProductsModel {
-  static async createProducts(request_obj: ProductsInterface) {
+  static async createProducts(
+    request_obj: ProductsInterface
+  ): Promise<{ products: Product[] } | null> {
     try {
       const { categoryName, productImage, id, ...rest } = request_obj;
 
@@ -52,7 +55,7 @@ export default class ProductsModel {
     }
   }
 
-  static async getAllProducts(id: string) {
+  static async getAllProducts(id: string): Promise<{ products: Product[] } | null> {
     try {
       const merchant = await prisma.merchant.findUnique({
         where: {
@@ -67,16 +70,20 @@ export default class ProductsModel {
         });
       }
 
-      const store = await prisma.store.findUnique({
+      const storeProducts = await prisma.store.findUnique({
         where: {
           id: merchant.storeId,
         },
         include: {
-          products: true,
+          products: {
+            include: {
+              category: true,
+            },
+          },
         },
       });
 
-      return store;
+      return storeProducts;
     } catch (error) {
       throw new APIError(error as HttpExceptionInterface);
     }
