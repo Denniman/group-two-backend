@@ -11,7 +11,7 @@
     "prisma:format": "npx prisma format",
     "format": "prettier --write \"**/*.{js,ts,tsx,json}\"",
     "dev": "cross-env NODE_ENV=development nodemon",
-    "ci": "tsc && yarn format",
+    "ci": "tsc && yarn format && yarn migrate",
     "clean": "rm -rf build",
     "prepare": "husky"
   },
