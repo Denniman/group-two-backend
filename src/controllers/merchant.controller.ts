@@ -76,4 +76,26 @@ export default class MerchantController extends UserControllerInterface {
       return next(error);
     }
   }
+
+  static async getTransactions(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): ExpressResponseInterface {
+    try {
+      const storeId = req.params.id;
+
+      const transactionRecords = await MerchantModel.getTransactionsById(storeId);
+
+      return res.status(httpStatus.CREATED).json(
+        sendResponse({
+          payload: transactionRecords,
+          message: "success",
+          status: httpStatus.CREATED,
+        })
+      );
+    } catch (error) {
+      return next(error);
+    }
+  }
 }

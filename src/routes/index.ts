@@ -8,6 +8,7 @@ import { Request, Response, Router } from "express";
 import authRoute from "./auth.routes";
 import merchantRoute from "./merchant.routes";
 import productsRoute from "./products.routes";
+import customerRoute from "./customer.routes";
 import AuthPolicy from "../policies/auth.policy";
 
 const router = Router();
@@ -25,6 +26,8 @@ router.use("/auth", authRoute);
  * @description Validate the request, check if user is signed in and is authorized to perform this request
  */
 router.use(AuthPolicy.hasAccessToken);
+
+router.use("/customer", customerRoute);
 
 router.use("/merchant", merchantRoute);
 

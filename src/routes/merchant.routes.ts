@@ -29,4 +29,6 @@ router
     MerchantController.createBusiness
   );
 
+router.route("/get-transactions/:id").get(MerchantController.getTransactions);
+
 export default router;

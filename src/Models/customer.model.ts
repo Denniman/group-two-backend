@@ -4,6 +4,7 @@ import APIError from "../helpers/api_errors";
 import BcryptService from "../services/bcrypt.service";
 import { HttpExceptionInterface } from "typings/helpers";
 import { CustomerValidation } from "typings/customerValidation";
+import { TransactionValidation } from "typings/transactionValidation";
 
 export default class CustomerModel {
   static async create(request_obj: CustomerValidation) {
@@ -43,6 +44,20 @@ export default class CustomerModel {
       });
 
       return customer;
+    } catch (error) {
+      throw new APIError(error as HttpExceptionInterface);
+    }
+  }
+
+  static async create_transaction(request_obj: TransactionValidation) {
+    try {
+      const { date, quantity, txId, productId, status, amount, storeId } = request_obj;
+
+      const transaction = await prisma.transaction.create({
+        data: { date, quantity, txId, productId, status, amount, storeId },
+      });
+
+      return transaction;
     } catch (error) {
       throw new APIError(error as HttpExceptionInterface);
     }
