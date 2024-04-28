@@ -65,6 +65,10 @@ export default class CustomerModel {
       }
 
       return transaction;
+    } catch (error) {
+    throw new APIError(error as HttpExceptionInterface);
+  }
+}
       
       
   static async getMerchantStore(storeName: string): Promise<any> {
