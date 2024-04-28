@@ -16,12 +16,17 @@ export default {
    */
   createStore: {
     [Segments.BODY]: Joi.object<StoreValidation>().keys({
-      storeName: Joi.string().required(),
+      storeName: Joi.string().min(3).max(15).required(),
       color: Joi.string().optional(),
       backgroundColor: Joi.string().required(),
       storeBannerImage: Joi.string().optional(),
       fontStyle: Joi.string().required().optional(),
       storeDescription: Joi.string().min(6).optional(),
+    }),
+  },
+  getStore: {
+    [Segments.BODY]: Joi.object<StoreValidation>().keys({
+      storeName: Joi.string().required(),
     }),
   },
 };

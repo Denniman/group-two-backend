@@ -6,7 +6,7 @@ import { HttpExceptionInterface } from "typings/helpers";
 import { CustomerValidation } from "typings/customerValidation";
 
 export default class CustomerModel {
-  static async create(request_obj: CustomerValidation) {
+  static async create(request_obj: CustomerValidation): Promise<any> {
     try {
       const { email, password, storeName } = request_obj;
 
@@ -43,6 +43,35 @@ export default class CustomerModel {
       });
 
       return customer;
+    } catch (error) {
+      throw new APIError(error as HttpExceptionInterface);
+    }
+  }
+
+  static async getMerchantStore(storeName: string): Promise<any> {
+    try {
+      const storeProducts = await prisma.store.findUnique({
+        where: {
+          storeName,
+        },
+        include: {
+          products: {
+            include: {
+              category: true,
+            },
+          },
+          setting: true,
+        },
+      });
+
+      if (!storeProducts) {
+        throw new APIError({
+          status: httpStatus.NOT_FOUND,
+          message: "Store does not exist.",
+        });
+      }
+
+      return storeProducts;
     } catch (error) {
       throw new APIError(error as HttpExceptionInterface);
     }
