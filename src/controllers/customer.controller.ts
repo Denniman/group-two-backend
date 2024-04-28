@@ -36,15 +36,14 @@ export default class CustomerController extends CustomerControllerInterface {
       return next(error);
     }
   }
-  
-  
+
   static async createTransaction(
     req: Request,
     res: Response,
     next: NextFunction
   ): ExpressResponseInterface {
     try {
-      const customerTransaction = await customerModel.create_transaction({ ...req.body });
+      const customerTransaction = await CustomerModel.create_transaction({ ...req.body });
 
       return res.status(httpStatus.CREATED).json(
         sendResponse({

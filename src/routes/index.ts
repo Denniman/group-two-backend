@@ -7,7 +7,6 @@
 import { Request, Response, Router } from "express";
 import authRoute from "./auth.routes";
 import merchantRoute from "./merchant.routes";
-import customerRoute from "./customer.routes";
 import productsRoute from "./products.routes";
 import customerRoute from "./customer.routes";
 import merchantUnAuthRoute from "./merchantunauth.routes";

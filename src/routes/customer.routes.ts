@@ -18,6 +18,7 @@ router
     [validate(TransactionValidation.createTransaction, { abortEarly: false })],
     CustomerController.createTransaction
   );
+
 router
   .route("/get-store")
   .post([validate(StoreValidation.getStore, { abortEarly: false })], CustomerController.getStore);

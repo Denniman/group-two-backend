@@ -29,6 +29,4 @@ router
     MerchantController.createBusiness
   );
 
-
-
 export default router;
