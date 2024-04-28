@@ -16,7 +16,7 @@ export default {
       date: Joi.date().required(),
       quantity: Joi.number().min(1).required(),
       txId: Joi.string().required(),
-      status: Joi.string().required(),
+      status: Joi.required(),
       productId: Joi.string().required(),
       amount: Joi.number().min(0).required(),
       storeId: Joi.string().required(),
