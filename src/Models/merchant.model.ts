@@ -150,12 +150,14 @@ export default class MerchantModel {
     try {
       const { id, storeName, storeDescription, ...rest } = request_obj;
 
+      const storeUrl = `https://switch-store-ecommerce.onrender.com/${storeName}`;
+
       const createStore = await prisma.$transaction(async (prisma) => {
         const storeSettings = await prisma.storeSetting.create({
           data: { ...rest },
         });
         const store = await prisma.store.create({
-          data: { storeName, storeDescription, storeSettingsId: storeSettings.id },
+          data: { storeName, storeDescription, storeUrl, storeSettingsId: storeSettings.id },
         });
 
         const merchant = await prisma.merchant.update({

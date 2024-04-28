@@ -7,6 +7,7 @@
 import { Request, Response, Router } from "express";
 import authRoute from "./auth.routes";
 import merchantRoute from "./merchant.routes";
+import customerRoute from "./customer.routes";
 import productsRoute from "./products.routes";
 import customerRoute from "./customer.routes";
 import merchantUnAuthRoute from "./merchantunauth.routes";
@@ -21,6 +22,8 @@ router.get("/health-check", (_req: Request, res: Response) =>
 
 // mount auth routes
 router.use("/auth", authRoute);
+
+router.use("/customer", customerRoute);
 
 /**
  * Check user access_token and authenticate user to perform HTTP requests
