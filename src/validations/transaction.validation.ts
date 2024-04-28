@@ -13,7 +13,6 @@ export default {
    */
   createTransaction: {
     [Segments.BODY]: Joi.object<TransactionValidation>().keys({
-      date: Joi.date().required(),
       quantity: Joi.number().min(1).required(),
       txId: Joi.string().required(),
       status: Joi.required(),

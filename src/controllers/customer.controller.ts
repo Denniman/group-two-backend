@@ -25,15 +25,6 @@ export default class customerController extends CustomerControllerInterface {
     try {
       const customerTransaction = await customerModel.create_transaction({ ...req.body });
 
-      if (!customerTransaction) {
-        return res.status(httpStatus.BAD_REQUEST).json(
-          sendResponse({
-            status: httpStatus.BAD_REQUEST,
-            message: "Transaction not created",
-          })
-        );
-      }
-
       return res.status(httpStatus.CREATED).json(
         sendResponse({
           payload: customerTransaction,

@@ -51,11 +51,18 @@ export default class CustomerModel {
 
   static async create_transaction(request_obj: TransactionValidation) {
     try {
-      const { date, quantity, txId, productId, status, amount, storeId } = request_obj;
+      const { quantity, txId, productId, status, amount, storeId } = request_obj;
 
       const transaction = await prisma.transaction.create({
-        data: { date, quantity, txId, productId, status, amount, storeId },
+        data: { quantity, txId, productId, status, amount, storeId },
       });
+
+      if (!transaction) {
+        throw new APIError({
+          status: httpStatus.BAD_REQUEST,
+          message: "Transaction creation failed",
+        });
+      }
 
       return transaction;
     } catch (error) {

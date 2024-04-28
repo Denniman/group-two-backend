@@ -9,6 +9,7 @@ import authRoute from "./auth.routes";
 import merchantRoute from "./merchant.routes";
 import productsRoute from "./products.routes";
 import customerRoute from "./customer.routes";
+import merchantUnAuthRoute from "./merchantunauth.routes";
 import AuthPolicy from "../policies/auth.policy";
 
 const router = Router();
@@ -25,6 +26,9 @@ router.use("/auth", authRoute);
  * Check user access_token and authenticate user to perform HTTP requests
  * @description Validate the request, check if user is signed in and is authorized to perform this request
  */
+
+router.use("/merchant", merchantUnAuthRoute);
+
 router.use(AuthPolicy.hasAccessToken);
 
 router.use("/customer", customerRoute);
