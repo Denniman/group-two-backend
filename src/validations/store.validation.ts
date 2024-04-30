@@ -26,7 +26,7 @@ export default {
   },
   getStore: {
     [Segments.BODY]: Joi.object<StoreValidation>().keys({
-      storeName: Joi.string().lowercase().required(),
+      storeName: Joi.string().required(),
     }),
   },
 };
