@@ -110,4 +110,17 @@ export abstract class UserControllerInterface {
     res: Response,
     next: NextFunction
   ) => ExpressResponseInterface;
+
+  /**
+   * @async
+   * @method getTransactions
+   * @param {object} req
+   * @param {object} res
+   * @returns {ExpressResponseInterface}
+   */
+  public static getTransactions: (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => ExpressResponseInterface;
 }

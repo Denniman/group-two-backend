@@ -278,4 +278,18 @@ export default class MerchantModel {
       throw new APIError(error as HttpExceptionInterface);
     }
   }
+
+  static async getTransactionsById(id: string) {
+    try {
+      const transactions = await prisma.transaction.findMany({
+        where: {
+          storeId: id,
+        },
+      });
+
+      return transactions;
+    } catch (error) {
+      throw new APIError(error as HttpExceptionInterface);
+    }
+  }
 }

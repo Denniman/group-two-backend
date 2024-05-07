@@ -92,7 +92,7 @@ model ProductCategory {
 
 model Transaction {
   id        String             @id @unique @default(cuid())
-  date      DateTime
+  date      DateTime           @default(now())
   quantity  Int
   txId      String?
   productId String             @unique
